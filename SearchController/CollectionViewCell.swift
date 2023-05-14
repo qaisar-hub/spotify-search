@@ -37,9 +37,27 @@ class CollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
+    fileprivate lazy var checkImageView : UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        return imageView
+    }()
+    
     func configure(_ data: String) {
         textLabel.text = data
         imageView.image = UIImage(named: data)
+    }
+    
+    func updateSelection() {
+        if(isSelected) {
+            self.checkImageView.image = UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+        } else {
+            self.checkImageView.image = UIImage(named: "")
+        }
     }
     
     override init(frame: CGRect) {
@@ -53,11 +71,14 @@ class CollectionViewCell: UICollectionViewCell {
     
     fileprivate func commonInit() {
         contentView.addSubview(stackView)
+        contentView.addSubview(checkImageView)
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            checkImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            checkImageView.topAnchor.constraint(equalTo: contentView.topAnchor)
         ])
         stackView.addArrangedSubview(imageView)
         stackView.addArrangedSubview(textLabel)

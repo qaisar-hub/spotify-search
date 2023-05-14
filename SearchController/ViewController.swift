@@ -38,6 +38,7 @@ class ViewController: UIViewController {
     
     var itemsArray = ["Davido", "Drake", "Asake", "Rema", "Burna Boy", "Wizkid", "Davido", "Drake", "Asake", "Rema", "Burna Boy", "Wizkid", "Davido", "Drake", "Asake", "Rema", "Burna Boy", "Wizkid"]
     var filteredArr = Array<String>()
+    var selectedCellIndex = Array<Int>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,6 +107,20 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
         }
         cell.configure(filteredArr[indexPath.row])
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as? CollectionViewCell
+        if(selectedCellIndex.contains(indexPath.row)) {
+            guard let index = selectedCellIndex.firstIndex(of: indexPath.row) else { return }
+            selectedCellIndex.remove(at: index)
+            cell?.isSelected = false
+            cell?.updateSelection()
+        } else {
+            selectedCellIndex.append(indexPath.row)
+            cell?.isSelected = true
+            cell?.updateSelection()
+        }
     }
     
 }
